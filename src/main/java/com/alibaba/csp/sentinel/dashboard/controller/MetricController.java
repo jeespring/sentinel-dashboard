@@ -39,6 +39,8 @@ import com.alibaba.csp.sentinel.util.StringUtil;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.MetricEntity;
 import com.alibaba.csp.sentinel.dashboard.domain.vo.MetricVo;
 
+import javax.annotation.Resource;
+
 /**
  * @author leyou
  */
@@ -50,7 +52,7 @@ public class MetricController {
 
     private static final long maxQueryIntervalMs = 1000 * 60 * 60;
 
-    @Autowired
+    @Resource(name = "inDatabaseMetricsRepository")
     private MetricsRepository<MetricEntity> metricStore;
 
     @ResponseBody

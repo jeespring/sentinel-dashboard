@@ -61,6 +61,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 /**
  * Fetch metric of machines.
  *
@@ -80,8 +82,9 @@ public class MetricFetcher {
 
     private Map<String, AtomicLong> appLastFetchTime = new ConcurrentHashMap<>();
 
-    @Autowired
+    @Resource(name = "inDatabaseMetricsRepository")
     private MetricsRepository<MetricEntity> metricStore;
+
     @Autowired
     private AppManagement appManagement;
 
