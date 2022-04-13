@@ -44,6 +44,11 @@ public class InDatabaseMetricsRepository implements MetricsRepository<MetricEnti
     @Resource
     private MetricMapper metricMapper;
 
+    /**
+     * 保存监控信息
+     *
+     * @param entity
+     */
     @Override
     public void save(MetricEntity entity) {
         if (entity == null || StringUtil.isBlank(entity.getApp())) {
@@ -57,6 +62,11 @@ public class InDatabaseMetricsRepository implements MetricsRepository<MetricEnti
         }
     }
 
+    /**
+     * 批量保存监控信息
+     *
+     * @param metrics metrics to save
+     */
     @Override
     public void saveAll(Iterable<MetricEntity> metrics) {
         if (metrics == null) {
@@ -72,6 +82,15 @@ public class InDatabaseMetricsRepository implements MetricsRepository<MetricEnti
         }
     }
 
+    /**
+     * 通过应用名称（app）、资源名称（resource）、timestamp 开始时间 、timestamp 结束时间查询 metric 列表
+     *
+     * @param app       application name for Sentinel
+     * @param resource  resource name
+     * @param startTime start timestamp
+     * @param endTime   end timestamp
+     * @return
+     */
     @Override
     public List<MetricEntity> queryByAppAndResourceBetween(String app, String resource,
                                                            long startTime, long endTime) {
@@ -101,6 +120,12 @@ public class InDatabaseMetricsRepository implements MetricsRepository<MetricEnti
         }
     }
 
+    /**
+     * 通过应用名称（app） 查询 Metric 列表
+     *
+     * @param app application name
+     * @return
+     */
     @Override
     public List<String> listResourcesOfApp(String app) {
         List<String> results = new ArrayList<>();

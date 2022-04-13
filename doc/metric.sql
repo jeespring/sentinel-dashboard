@@ -1,10 +1,10 @@
 CREATE TABLE `metric` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `app` varchar(255) DEFAULT NULL COMMENT '应用名称',
+    `resource` varchar(255) DEFAULT NULL COMMENT '资源名称',
+    `timestamp` datetime DEFAULT NULL COMMENT '监控信息时间戳',
     `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
     `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
-    `app` varchar(255) DEFAULT NULL COMMENT '应用名称',
-    `timestamp` datetime DEFAULT NULL COMMENT '监控信息时间戳',
-    `resource` varchar(255) DEFAULT NULL COMMENT '资源名称',
     `pass_qps` bigint(20) DEFAULT NULL COMMENT '通过QPS',
     `success_qps` bigint(20) DEFAULT NULL COMMENT '成功QPS',
     `block_qps` bigint(20) DEFAULT NULL COMMENT '限流QPS',
