@@ -5,7 +5,7 @@
 
     <groupId>com.alibaba.csp</groupId>
     <artifactId>sentinel-dashboard</artifactId>
-    <version>1.8.4-SNAPSHOT</version>
+    <version>1.8.4</version>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
     <description>Sentinel Dashboard</description>
@@ -27,7 +27,7 @@
             <dependency>
                 <groupId>com.alibaba.csp</groupId>
                 <artifactId>sentinel-parent</artifactId>
-                <version>1.8.4-SNAPSHOT</version>
+                <version>1.8.4</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

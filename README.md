@@ -4,9 +4,48 @@
 
 Sentinel 控制台是流量控制、熔断降级规则统一配置和管理的入口，它为用户提供了机器自发现、簇点链路自发现、监控、规则配置等功能。在 Sentinel 控制台上，我们可以配置规则并实时查看流量控制效果。
 
+ Sentinel 控制台中监控数据聚合后直接存在内存中，未进行持久化，且仅保留最近 5 分钟的监控数据。若需要监控数据持久化的功能，可以自行扩展实现 MetricsRepository 接口 。
+
+根据官方文档，对 Sentinel Dashboard 进行优化，将监控数据持久化到 MySQL 数据库，通过 [MyBatis-Plus](https://github.com/baomidou/mybatis-plus) 对监控数据进行操作。
+
 ## 1. 编译和启动
 
-### 1.1 如何编译
+
+
+### 1.1 配置 Sentinel Dashboard
+
+配置 application.properties 中 MySQL 数据库连接 
+
+```properties
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/spring-boot?characterEncoding=utf-8
+spring.datasource.username=root
+spring.datasource.password=root
+```
+
+执行 SQL 脚本
+
+```mysql
+CREATE TABLE `metric` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+    `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+    `app` varchar(255) DEFAULT NULL COMMENT '应用名称',
+    `timestamp` datetime DEFAULT NULL COMMENT '监控信息时间戳',
+    `resource` varchar(255) DEFAULT NULL COMMENT '资源名称',
+    `pass_qps` bigint(20) DEFAULT NULL COMMENT '通过QPS',
+    `success_qps` bigint(20) DEFAULT NULL COMMENT '成功QPS',
+    `block_qps` bigint(20) DEFAULT NULL COMMENT '限流QPS',
+    `exception_qps` bigint(20) DEFAULT NULL COMMENT '异常QPS',
+    `rt` decimal(10,2) DEFAULT NULL COMMENT '资源的平均响应时间',
+    `count` int(10) DEFAULT NULL COMMENT '本次聚合的总条数',
+    `resource_code` int(10) DEFAULT NULL COMMENT '资源hashcode',
+    PRIMARY KEY (`id`),
+    KEY `idx_app_timestamp` (`app`,`timestamp`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Sentinel监控信息表';
+```
+
+### 1.2 如何编译
 
 使用如下命令将代码打包成一个 fat jar:
 
@@ -14,7 +53,7 @@ Sentinel 控制台是流量控制、熔断降级规则统一配置和管理的�
 mvn clean package
 ```
 
-### 1.2 如何启动
+### 1.3 如何启动
 
 使用如下命令启动编译后的控制台：
 
